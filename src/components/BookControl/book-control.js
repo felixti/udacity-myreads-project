@@ -14,7 +14,7 @@ const BookControl = props => {
 
   return (
     <div className="book-shelf-changer">
-      <select onChange={handleCheckOption}>
+      <select value={defaultShelf} onChange={handleCheckOption}>
         <option value="move" disabled>
           Move to...
         </option>
@@ -51,7 +51,7 @@ const BookControl = props => {
         </option>
         <option
           className={
-            defaultShelf === "none"
+            defaultShelf === "none" || defaultShelf === undefined
               ? "checkmark checkmark_stem checkmark_kick"
               : undefined
           }

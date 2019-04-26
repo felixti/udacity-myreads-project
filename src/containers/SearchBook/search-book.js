@@ -17,7 +17,7 @@ const SearchBook = props => {
           <input
             type="text"
             onChange={handleBookSearch}
-            placeholder="Search by title or author"
+            placeholder="Search by title or author (starts after 3 typed chars)"
           />
         </div>
       </div>

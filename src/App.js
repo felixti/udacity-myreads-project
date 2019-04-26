@@ -19,18 +19,42 @@ class BooksApp extends React.Component {
   };
 
   addBookToMyShelves = (bookId, newShelf) => {
+    const setBookShelf = state => {
+      return state.searchedBooks.map(s => {
+        if (s.id === bookId) {
+          s.shelf = newShelf;
+          return s;
+        }
+
+        return s;
+      });
+    };
+
+    this.setState(currentState => ({
+      searchedBooks: setBookShelf(currentState)
+    }));
+
     const book = this.state.searchedBooks.find(_ => _.id === bookId);
     BooksAPI.update(book, newShelf)
       .then(() => this.getAllBooks())
       .catch(error => console.log(error));
   };
 
+  setBookShelfToSearchedBooks = searchedBooks =>
+    searchedBooks.map(sb => {
+      const bookShelf = this.state.books.find(b => b.id === sb.id);
+      sb.shelf = bookShelf ? bookShelf.shelf : "none";
+      return sb;
+    });
+
   searchBook = ({ target: { value } }) => {
     value.length > 2
       ? BooksAPI.search(value)
           .then(books => {
             books instanceof Array
-              ? this.setState({ searchedBooks: books })
+              ? this.setState({
+                  searchedBooks: this.setBookShelfToSearchedBooks(books)
+                })
               : this.setState({ searchedBooks: [] });
           })
           .catch(error => console.log("error", error))
